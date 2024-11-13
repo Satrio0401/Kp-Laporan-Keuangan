@@ -38,7 +38,7 @@ class StokController extends Controller
         if (!$stoks) {
             return redirect('/LaporanStok')->with('error', 'Data tidak ditemukan!'); // Penanganan jika data tidak ditemukan
         }
-        return view('Laporan Stok.editdata', compact('stok')); // Menggunakan variabel dengan huruf kecil
+        return view('Laporan Stok.editdata', compact('stoks')); // Menggunakan variabel dengan huruf kecil
     }
 
     public function updatedata(Request $request, $kode_barang) // Ubah parameter menjadi kode_barang
