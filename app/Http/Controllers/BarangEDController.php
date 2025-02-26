@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BarangED;
 use Illuminate\Http\Request;
 use Mpdf\Mpdf;
+use Carbon\Carbon;
 
 class BarangEDController extends Controller
 {
@@ -12,6 +13,21 @@ class BarangEDController extends Controller
     public function index()
     {
         $barangeds = BarangED::orderBy('tanggal_kadaluarsa', 'asc')->get();
+    
+        foreach ($barangeds as $barang) {
+            $tanggalKadaluarsa = Carbon::parse($barang->tanggal_kadaluarsa);
+            $hariIni = Carbon::now();
+            $selisihHari = $hariIni->diffInDays($tanggalKadaluarsa, false);
+    
+            if ($selisihHari < 0) {
+                $barang->status_warna = 'expired'; // Merah (Sudah kedaluwarsa)
+            } elseif ($selisihHari <= 7) {
+                $barang->status_warna = 'warning'; // Kuning (H-7 sebelum kedaluwarsa)
+            } else {
+                $barang->status_warna = ''; // Normal (tidak ada warna khusus)
+            }
+        }
+    
         return view('Laporan Barang ED.index', compact('barangeds'));
     }
 
@@ -74,30 +90,55 @@ class BarangEDController extends Controller
         return redirect('/LaporanBarangED')->with('success', 'Data Berhasil Dihapus');
     }
 
-    // Fungsi untuk pencarian berdasarkan tanggal
-    public function search(Request $request)
-    {
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
+    // // Fungsi untuk pencarian berdasarkan tanggal
+    // public function search(Request $request)
+    // {
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
 
-        $query = BarangED::query();
+    //     $query = BarangED::query();
 
-        if ($startDate) {
-            $query->whereDate('tanggal_kadaluarsa', '>=', $startDate);
-        }
+    //     if ($startDate) {
+    //         $query->whereDate('tanggal_kadaluarsa', '>=', $startDate);
+    //     }
 
-        if ($endDate) {
-            $query->whereDate('tanggal_kadaluarsa', '<=', $endDate);
-        }
+    //     if ($endDate) {
+    //         $query->whereDate('tanggal_kadaluarsa', '<=', $endDate);
+    //     }
 
-        $barangeds = $query->get();
-        $totalPersediaan = $barangeds->sum('jumlah_barang');
+    //     $barangeds = $query->get();
+    //     $totalPersediaan = $barangeds->sum('jumlah_barang');
 
-        return view('Laporan Barang ED.index', compact('barangeds', 'totalPersediaan'));
-    }
+    //     return view('Laporan Barang ED.index', compact('barangeds', 'totalPersediaan'));
+    // }
 
     // Fungsi untuk mencetak laporan dalam format PDF
-    public function cetakpdf(Request $request)
+    // public function cetakpdf(Request $request)
+    // {
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+
+    //     $query = BarangED::query();
+
+    //     if ($startDate) {
+    //         $query->whereDate('tanggal_kadaluarsa', '>=', $startDate);
+    //     }
+
+    //     if ($endDate) {
+    //         $query->whereDate('tanggal_kadaluarsa', '<=', $endDate);
+    //     }
+
+    //     $barangeds = $query->get();
+    //     $totalPersediaan = $barangeds->sum('jumlah_barang');
+
+    //     $html = view('Laporan Barang ED.cetakpdf', compact('barangeds', 'totalPersediaan'))->render();
+
+    //     $mpdf = new Mpdf(['mode' => 'utf-8']);
+    //     $mpdf->WriteHTML($html);
+    //     return $mpdf->Output('Laporan Barang ED.pdf', 'I');
+    // }
+
+    public function searchOrPdf(Request $request)
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
@@ -113,12 +154,15 @@ class BarangEDController extends Controller
         }
 
         $barangeds = $query->get();
-        $totalPersediaan = $barangeds->sum('jumlah_barang');
 
-        $html = view('Laporan Barang ED.cetakpdf', compact('barangeds', 'totalPersediaan'))->render();
-
-        $mpdf = new Mpdf(['mode' => 'utf-8']);
-        $mpdf->WriteHTML($html);
-        return $mpdf->Output('Laporan Barang ED.pdf', 'I');
+        // Cek apakah ini permintaan untuk PDF atau untuk search
+        if ($request->route()->getName() == 'LaporanBarangED.cetakpdf') {
+            $html = view('Laporan Barang ED.cetakpdf', compact('barangeds'))->render();
+            $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8']);
+            $mpdf->WriteHTML($html);
+            return $mpdf->Output('Laporan Barang ED.pdf', 'I');
+        } else {
+            return view('Laporan Pembelian.index', compact('barangeds'));
+        }
     }
 }

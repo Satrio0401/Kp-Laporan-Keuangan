@@ -128,16 +128,16 @@ class ReturPenjualanController extends Controller
     $returPemesanan = $query->get();
 
     // Hitung total jumlah yang dikembalikan
-    $totalJumlahDikembalikan = $returPemesanan->sum('jumlah_dikembalikan');
+    $totalJumlah = $returPemesanan->sum('jumlah_dikembalikan');
 
     // Cek apakah ini permintaan untuk PDF atau untuk search
-    if ($request->route()->getName() == 'laporanreturpemesanan.cetakpdf') {
-        $html = view('Laporan Retur Pemesanan.cetakpdf', compact('returPemesanan', 'totalJumlahDikembalikan'))->render();
+    if ($request->route()->getName() == 'LaporanReturPemesanan.cetakpdf') {
+        $html = view('Laporan Retur Pemesanan.cetakpdf', compact('returPemesanan', 'totalJumlah'))->render();
         $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8']);
         $mpdf->WriteHTML($html);
         return $mpdf->Output('Laporan_Retur_Pemesanan.pdf', 'I');
     } else {
-        return view('Laporan Retur Pemesanan.index', compact('returPemesanan', 'totalJumlahDikembalikan'));
+        return view('Laporan Retur Pemesanan.index', compact('returPemesanan', 'totalJumlah'));
     }
 }
 

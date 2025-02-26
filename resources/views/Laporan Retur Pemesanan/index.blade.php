@@ -153,7 +153,7 @@
         // Saat tombol PDF diklik, ubah action form untuk menuju ke URL pembuatan PDF
         $('#pdfButton').on('click', function() {
             var form = $('#laporanForm');
-            form.attr('action', "{{ route('laporanpembelian.cetakpdf') }}"); // Ubah action form ke route PDF
+            form.attr('action', "{{ route('LaporanReturPemesanan.cetakpdf') }}"); // Ubah action form ke route PDF
             form.submit(); // Submit form untuk menghasilkan PDF
         });
 

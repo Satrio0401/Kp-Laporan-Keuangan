@@ -79,23 +79,25 @@
             <tr>
                 <th>No</th>
                 <th>Kode Barang</th>
-                <th>Nama Barang</th>
+                <th>lot</th>
+                <th>nama barang</th>
+                <th>jumlah barang</th>
+                <th>tanggal masuk</th>
                 <th>Tanggal Kadaluarsa</th>
-                <th>Jumlah Lot</th>
-                <th>Persedian</th>
             </tr>
         </thead>
         <tbody>
             @php $no = 1; @endphp
-            @foreach($Barangeds as $baranged)
-                <tr>
-                    <td scope="pembelian">{{$no++}}</td>
-                    <td>{{ $baranged->kode_barang }}</td>
-                    <td>{{ $baranged->nama_barang }}</td>
-                    <td>{{ $baranged->tanggal_kadaluarsa}}</td>
-                    <td>{{ $baranged->jumlah_lot }}</td>
-                    <td>{{ $baranged->persediaan }}</td>
-                </tr>
+            @foreach($barangeds as $baranged)
+            <tr>
+                <td>{{ $no++ }}</td>
+                <td>{{ $baranged->kode_barang }}</td>
+                <td>{{ $baranged->lot}}</td>
+                <td>{{ $baranged->nama_barang }}</td>
+                <td>{{ $baranged->jumlah_barang }}</td>
+                <td>{{ $baranged->tanggal_masuk }}</td>
+                <td>{{ $baranged->tanggal_kadaluarsa }}</td>
+            </tr>
             @endforeach
             {{-- <tfoot>
                 <tr>
