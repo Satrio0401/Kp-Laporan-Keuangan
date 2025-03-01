@@ -183,10 +183,15 @@
         window.location.href = "/LaporanReturPembelian/delete/" + noFaktur;
     });
 
-    $('.edit').on('click', function() {
-        editFaktur = $(this).data('id'); // Ambil no_faktur dari data-id
-        $('#editModal').modal('show'); // Menampilkan modal edit
-    });
+    // $('.edit').on('click', function() {
+    //     editFaktur = $(this).data('id'); // Ambil no_faktur dari data-id
+    //     $('#editModal').modal('show'); // Menampilkan modal edit
+    // });
+
+    $(document).on('click', '.btn-warning', function() {
+    editFaktur = $(this).data('id');
+    $('#editModal').modal('show'); 
+});
 
     $('#confirmEdit').on('click', function() {
         // Lakukan pengalihan ke halaman edit dengan no_faktur

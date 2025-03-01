@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\TransaksiPenjualan;
+use App\Models\Pembelian;
+use App\Models\Pengeluaran;
+use App\Models\ReturPembelian;
+
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        return view('Dashboard.index'); // Pastikan sesuai dengan file Blade yang digunakan
+    }
+
+    public function getChartData(Request $request)
+    {
+        $year = $request->input('year', date('Y')); // Tahun default: tahun sekarang
+        $currentMonth = date('m'); // Bulan sekarang
+
+        // === Pemasukan dari TransaksiPenjualan ===
+        $pemasukan = TransaksiPenjualan::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total')
+            ->whereYear('created_at', $year)
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->pluck('total', 'bulan')
+            ->toArray();
+
+        // === Pengeluaran dari Pembelian ===
+        $pengeluaranPembelian = Pembelian::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total')
+            ->whereYear('created_at', $year)
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->pluck('total', 'bulan')
+            ->toArray();
+
+        // === Pengeluaran dari Pengeluaran ===
+        $pengeluaranLainnya = Pengeluaran::selectRaw('MONTH(tanggal_pengeluaran) as bulan, SUM(total_pengeluaran) as total')
+            ->whereYear('created_at', $year)
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->pluck('total', 'bulan')
+            ->toArray();
+
+        // Gabungkan semua pengeluaran
+        $pengeluaran = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $pengeluaran[$i] = ($pengeluaranPembelian[$i] ?? 0) + ($pengeluaranLainnya[$i] ?? 0);
+        }
+
+        // === Buat array lengkap untuk Chart ===
+        $dataPemasukan = [];
+        $dataPengeluaran = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $dataPemasukan[] = $pemasukan[$i] ?? 0;
+            $dataPengeluaran[] = $pengeluaran[$i] ?? 0;
+        }
+
+        // === Total per Tahun & Bulan Ini ===
+        $totalPemasukanTahun = array_sum($dataPemasukan);
+        $totalPengeluaranTahun = array_sum($dataPengeluaran);
+        $totalPemasukanBulan = TransaksiPenjualan::whereYear('created_at', $year)
+        ->whereMonth('created_at', $currentMonth)
+        ->sum('total_harga');
+        $pengeluaranPembelianBulanIni = Pembelian::whereYear('created_at', $year)
+        ->whereMonth('created_at', $currentMonth)
+        ->sum('total_harga');
+        $pengeluaranLainnyaBulanIni = Pengeluaran::whereYear('created_at', $year)
+        ->whereMonth('tanggal_pengeluaran', $currentMonth)
+        ->sum('total_pengeluaran');
+
+        $totalPengeluaranBulan = $pengeluaranPembelianBulanIni + $pengeluaranLainnyaBulanIni;
+
+
+        return response()->json([
+            'pemasukan' => $dataPemasukan,
+            'pengeluaran' => $dataPengeluaran,
+            'totalPemasukanTahun' => $totalPemasukanTahun,
+            'totalPengeluaranTahun' => $totalPengeluaranTahun,
+            'totalPemasukanBulan' => $totalPemasukanBulan,
+            'totalPengeluaranBulan' => $totalPengeluaranBulan
+        ]);
+    }
+}

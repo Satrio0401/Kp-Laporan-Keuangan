@@ -162,7 +162,7 @@ class BarangEDController extends Controller
             $mpdf->WriteHTML($html);
             return $mpdf->Output('Laporan Barang ED.pdf', 'I');
         } else {
-            return view('Laporan Pembelian.index', compact('barangeds'));
+            return view('Laporan BarangED.index', compact('barangeds'));
         }
     }
 }

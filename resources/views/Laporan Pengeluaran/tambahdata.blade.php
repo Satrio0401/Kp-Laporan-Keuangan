@@ -35,7 +35,7 @@
                                 <div class="form-group row">
                                     <label class="col-lg-2 col-form-label" for="val-username">Jumlah</label>
                                     <div class="col-lg-10">
-                                        <input type="number" name="jumlah" class="form-control" id="val-username" name="val-username" placeholder="">
+                                        <input type="number" name="total_pengeluaran" class="form-control" id="val-username" name="val-username" placeholder="">
                                     </div>
                                 </div>
                                 <div class="row mt-4">

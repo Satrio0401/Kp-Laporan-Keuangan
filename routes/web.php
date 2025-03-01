@@ -2,23 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/Dashboard', function () {
-    return view('Dashboard.index');
-});
+// Route::get('/Dashboard', function () {
+//     return view('Dashboard.index');
+// });
 //Login
 Route::get('/',[\App\Http\Controllers\LoginController::class,'index']);
 Route::post('/Loginproses',[\App\Http\Controllers\LoginController::class,'loginproses']);
+
 //Dashboard
-//Laporan Pembelian
-// Route::get('/LaporanPembelian',[\App\Http\Controllers\PembelianController::class,'index']);
+Route::get('/Dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::get('/chart-data', [App\Http\Controllers\DashboardController::class, 'getChartData']);
 
-// Route::get('/LaporanPembelian/tambahdata',[\App\Http\Controllers\PembelianController::class,'tambahdata']);
-// Route::post('/LaporanPembelian/tambahdata/insertdata',[\App\Http\Controllers\PembelianController::class,'insertdata']);
-
-// Route::get('/LaporanPembelian/editdata/{id}',[\App\Http\Controllers\PembelianController::class,'editdata']);
-// Route::post('/updatedata/{id}',[\App\Http\Controllers\PembelianController::class,'updatedata']);
-
-// Route::get('/LaporanPembelian/delete/{id}',[\App\Http\Controllers\PembelianController::class,'delete']);
 
 // Laporan Pembelian
 Route::get('/LaporanPembelian', [\App\Http\Controllers\PembelianController::class, 'index']);

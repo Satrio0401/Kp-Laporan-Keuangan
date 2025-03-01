@@ -84,6 +84,7 @@
                 <th>jumlah barang</th>
                 <th>tanggal masuk</th>
                 <th>Tanggal Kadaluarsa</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -97,6 +98,7 @@
                 <td>{{ $baranged->jumlah_barang }}</td>
                 <td>{{ $baranged->tanggal_masuk }}</td>
                 <td>{{ $baranged->tanggal_kadaluarsa }}</td>
+                <td>{!! $baranged->status_exp !!}</td>
             </tr>
             @endforeach
             {{-- <tfoot>

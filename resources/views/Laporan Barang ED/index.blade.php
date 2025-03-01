@@ -33,6 +33,7 @@
                                 <th>Jumlah Barang</th>
                                 <th>Tanggal Masuk</th>
                                 <th>Tanggal Kadaluarsa</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,6 +51,7 @@
                                     <td>{{ $baranged->jumlah_barang }}</td>
                                     <td>{{ $baranged->tanggal_masuk }}</td>
                                     <td>{{ $baranged->tanggal_kadaluarsa }}</td>
+                                    <td>{!! $baranged->status_exp !!}</td>
                                     <td>
                                         <a href="#" type="button" class="btn btn-warning edit" data-id="{{ $baranged->kode_barang }}"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <a href="#" type="button" class="btn btn-danger delete" data-id="{{ $baranged->kode_barang }}"><i class="fa-solid fa-trash"></i></a>
@@ -106,15 +108,6 @@
     </div>
 </div>
 
-<script>
-    // Saat tombol PDF diklik, ubah action form untuk menuju ke URL pembuatan PDF
-    document.getElementById('pdfButton').addEventListener('click', function() {
-        var form = document.getElementById('laporanForm');
-        form.action = "{{ route('LaporanPengeluaran.cetakpdf') }}"; // Ubah action form ke route PDF
-        form.submit(); // Submit form untuk menghasilkan PDF
-    });
-</script>
-
 <script src="{{ asset('focus-2/vendor/global/global.min.js') }}"></script>
 <script src="{{ asset('focus-2/js/quixnav-init.js') }}"></script>
 <script src="{{ asset('focus-2/js/custom.min.js') }}"></script>
@@ -129,7 +122,8 @@
         // Saat tombol PDF diklik, ubah action form untuk menuju ke URL pembuatan PDF
         $('#pdfButton').on('click', function() {
             var form = $('#laporanForm');
-            form.attr('action', "{{ route('LaporanBarangED.cetakpdf') }}"); // Ubah action form ke route PDF
+            form.attr('action', "{{ route('LaporanBarangED.cetakpdf') }}");
+            form.attr('target', '_blank'); // Ubah action form ke route PDF
             form.submit(); // Submit form untuk menghasilkan PDF
         });
 
