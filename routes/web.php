@@ -12,6 +12,8 @@ Route::post('/Loginproses',[\App\Http\Controllers\LoginController::class,'loginp
 //Dashboard
 Route::get('/Dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 Route::get('/chart-data', [App\Http\Controllers\DashboardController::class, 'getChartData']);
+Route::get('/pie-chart-data', [App\Http\Controllers\DashboardController::class, 'getPieChartData']);
+
 
 
 // Laporan Pembelian

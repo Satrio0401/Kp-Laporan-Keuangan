@@ -28,56 +28,43 @@
     </div>
 </div>
 
-{{-- Row untuk menampilkan Total Pemasukan & Pengeluaran --}}
 <div class="row">
     <div class="col-lg-3 col-sm-6">
-        <div class="card">
-            <div class="stat-widget-one card-body">
-                <div class="stat-icon d-inline-block">
-                    <i class="ti-money text-success border-success"></i>
-                </div>
-                <div class="stat-content d-inline-block">
-                    <div class="stat-text">Total Pemasukan per Bulan</div>
-                    <div class="stat-digit" id="totalPemasukanBulan">0</div>
+        <div class="card shadow-sm p-2">
+            <div class="stat-widget-one card-body d-flex align-items-center">
+                <div class="stat-content">
+                    <div class="stat-text fw-semibold text-muted small">Total Pemasukan per Bulan</div>
+                    <div class="stat-digit fw-bold fs-5 text-dark" id="totalPemasukanBulan">0</div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
-        <div class="card">
-            <div class="stat-widget-one card-body">
-                <div class="stat-icon d-inline-block">
-                    <i class="ti-money text-danger border-danger"></i>
-                </div>
-                <div class="stat-content d-inline-block">
-                    <div class="stat-text">Total Pengeluaran per Bulan</div>
-                    <div class="stat-digit" id="totalPengeluaranBulan">0</div>
+        <div class="card shadow-sm p-2">
+            <div class="stat-widget-one card-body d-flex align-items-center">
+                <div class="stat-content">
+                    <div class="stat-text fw-semibold text-muted small">Total Pengeluaran per Bulan</div>
+                    <div class="stat-digit fw-bold fs-5 text-dark" id="totalPengeluaranBulan">0</div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
-        <div class="card">
-            <div class="stat-widget-one card-body">
-                <div class="stat-icon d-inline-block">
-                    <i class="ti-money text-success border-success"></i>
-                </div>
-                <div class="stat-content d-inline-block">
-                    <div class="stat-text">Total Pemasukan per Tahun</div>
-                    <div class="stat-digit" id="totalPemasukanTahun">0</div>
+        <div class="card shadow-sm p-2">
+            <div class="stat-widget-one card-body d-flex align-items-center">
+                <div class="stat-content">
+                    <div class="stat-text fw-semibold text-muted small">Total Pemasukan per Tahun</div>
+                    <div class="stat-digit fw-bold fs-5 text-dark" id="totalPemasukanTahun">0</div>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-6">
-        <div class="card">
-            <div class="stat-widget-one card-body">
-                <div class="stat-icon d-inline-block">
-                    <i class="ti-money text-danger border-danger"></i>
-                </div>
-                <div class="stat-content d-inline-block">
-                    <div class="stat-text">Total Pengeluaran per Tahun</div>
-                    <div class="stat-digit" id="totalPengeluaranTahun">0</div>
+        <div class="card shadow-sm p-2">
+            <div class="stat-widget-one card-body d-flex align-items-center">
+                <div class="stat-content">
+                    <div class="stat-text fw-semibold text-muted small">Total Pengeluaran per Tahun</div>
+                    <div class="stat-digit fw-bold fs-5 text-dark" id="totalPengeluaranTahun">0</div>
                 </div>
             </div>
         </div>
@@ -86,6 +73,7 @@
 
 {{-- Chart --}}
 <div class="row">
+    <!-- Chart Batang (Pemasukan & Pengeluaran) -->
     <div class="col-lg-8">
         <div class="card">
             <div class="card-header">
@@ -96,7 +84,20 @@
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Pie Chart (Menu Terlaris) -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Menu Terlaris Bulan Ini</h4>
+            </div>
+            <div class="card-body">
+                <canvas id="menuPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div> <!-- Tutup row dengan benar -->
+
 
 {{-- Tambahkan Chart.js langsung di dalam template ini --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -156,8 +157,29 @@
         document.getElementById('filterYear').addEventListener('change', function () {
             fetchChartData(this.value);
         });
-
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var pieData = @json($penjualanPerBarang);
+
+        var labels = pieData.map(item => item.nama);
+        var values = pieData.map(item => item.total_terjual);
+        var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800'];
+
+        var pieCtx = document.getElementById('menuPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: colors
+                }]
+            }
+        });
+    });
+
+    
 </script>
 
 

@@ -7,13 +7,12 @@ use App\Models\TransaksiPenjualan;
 use App\Models\Pembelian;
 use App\Models\Pengeluaran;
 use App\Models\ReturPembelian;
+use App\Models\PenjualanPerBarang;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        return view('Dashboard.index'); // Pastikan sesuai dengan file Blade yang digunakan
-    }
+    
 
     public function getChartData(Request $request)
     {
@@ -83,4 +82,27 @@ class DashboardController extends Controller
             'totalPengeluaranBulan' => $totalPengeluaranBulan
         ]);
     }
+
+    public function index()
+{
+    $year = date('Y');
+    $month = date('m');
+
+    // Ambil 5 menu terlaris bulan ini
+    $penjualanPerBarang = DB::table('penjualan_per_barang')
+    ->join('menu', 'penjualan_per_barang.id_menu', '=', 'menu.id') // Ganti menu_id → id_menu
+    ->join('transaksi_penjualan', 'penjualan_per_barang.no_faktur', '=', 'transaksi_penjualan.no_faktur')
+    ->whereYear('transaksi_penjualan.created_at', $year)
+    ->whereMonth('transaksi_penjualan.created_at', $month)
+    ->select('menu.nama', DB::raw('SUM(penjualan_per_barang.jumlah) as total_terjual'))
+    ->groupBy('menu.nama')
+    ->orderByDesc('total_terjual')
+    ->limit(5)
+    ->get();
+
+
+    return view('Dashboard.index', compact('penjualanPerBarang'));
+}
+
+
 }
