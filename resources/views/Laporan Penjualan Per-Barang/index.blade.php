@@ -56,7 +56,7 @@
                            <td>{{ formatRupiah($item->subtotal) }}</td>
                            <td>
                             <a href="#" class="btn btn-warning edit" data-id="{{$item->no_faktur}}"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <button type="button" class="btn btn-danger delete" data-id="{{$item->no_faktur}}" data-toggle="modal" data-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
+                            <button type="button" class="btn btn-danger delete" data-id="{{$item->id}}" data-toggle="modal" data-target="#deleteModal"><i class="fa-solid fa-trash"></i></button>
                            </td>
                        </tr>
                        @php
@@ -81,7 +81,6 @@
     </div>
 </div>
 
-!-- Modal Konfirmasi Edit -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

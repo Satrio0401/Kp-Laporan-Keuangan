@@ -50,11 +50,15 @@
             Nav header start
         ***********************************-->
         <div class="nav-header">
-            <a href="index.html" class="brand-logo">
-                <img class="logo-abbr" src="./images/logo.png" alt="">
-                <img class="logo-compact" src="./images/logo-text.png" alt="">
-                <img class="brand-title" src="./images/logo-text.png" alt="">
+            <a href="/Dashboard" class="brand-logo">
+                <img class="logo-abbr" src="{{ asset('images/koin2.png') }}" alt="">
+                <h1 class="brand-title">CafeCash</h1>
             </a>
+
+            {{-- <div class="nav-header">
+                <a href="/Dashboard" class="brand-logo">
+                    <h1 class="brand-title">CafeCash</h1>
+                </a> --}}
 
             <div class="nav-control">
                 <div class="hamburger">
@@ -224,6 +228,17 @@
                 @yield('Content')
             </div>
         </div>
+
+    <!--**********************************
+    Footer start
+***********************************-->
+<footer class="text-center p-3" style="background-color: #f8f9fa;">
+    <p class="mb-0">Created by Your Name | © 2025 All Rights Reserved</p>
+</footer>
+<!--**********************************
+    Footer end
+***********************************-->
+
         
     <script src="{{ asset('focus-2/vendor/global/global.min.js') }}"></script>
     <script src="{{ asset('focus-2/js/quixnav-init.js') }}"></script>

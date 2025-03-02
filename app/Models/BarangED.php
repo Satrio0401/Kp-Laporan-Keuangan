@@ -35,21 +35,30 @@ class BarangED extends Model
     // Menambahkan atribut status_exp agar bisa dipanggil langsung di Blade
     protected $appends = ['status_exp'];
 
-    // Accessor untuk status expired
     public function getStatusExpAttribute()
     {
-        $today = Carbon::now();
-        $expDate = Carbon::parse($this->tanggal_kadaluarsa);
-        $diffDays = $today->diffInDays($expDate, false);
+        $today = Carbon::now()->startOfDay(); // Hanya cek berdasarkan tanggal (tanpa jam)
+        $tanggalExp = Carbon::parse($this->tanggal_kadaluarsa)->startOfDay(); // Ambil tanggal kadaluarsa
+        $hMin7 = $tanggalExp->copy()->subDays(7); // Hitung H-7 sebelum expired
 
-        if ($diffDays < 0) {
+        // Jika hari ini sudah mencapai tanggal kadaluarsa → Expired
+        if ($today->equalTo($tanggalExp) || $today->greaterThan($tanggalExp)) {
             return '<span class="badge bg-danger">Expired</span>';
-        } elseif ($diffDays <= 7) {
-            return '<span class="badge bg-warning">Hampir Expired</span>';
-        } else {
-            return '<span class="badge bg-success">Aman</span>';
         }
+    
+        // Jika hari ini berada dalam rentang H-7 hingga sehari sebelum tanggal kadaluarsa → Hampir Expired
+        if ($today->greaterThanOrEqualTo($hMin7) && $today->lessThan($tanggalExp)) {
+            return '<span class="badge bg-warning">Hampir Expired</span>';
+        }
+    
+        // Jika masih lebih dari H-7 sebelum expired → Aman
+        return '<span class="badge bg-success">Aman</span>';
     }
+    
+    
+
+
+    
 
     // Event untuk generate lot otomatis
     public static function boot()

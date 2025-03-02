@@ -6,19 +6,12 @@
     <div class="col-sm-6 p-md-0">
         <div class="welcome-text">
             <h4>Hi, welcome back!</h4>
-            <p class="mb-0">Your business dashboard template</p>
         </div>
-    </div>
-    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Layout</a></li>
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Blank</a></li>
-        </ol>
     </div>
 </div>
 
 <div class="row mb-3">
-    <div class="col-lg-5">
+    <div class="col-lg-5 ">
         <label for="filterYear">Pilih Tahun:</label>
         <select id="filterYear" class="form-control">
             <option value="2024">2024</option>

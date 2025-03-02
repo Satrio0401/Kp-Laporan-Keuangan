@@ -20,16 +20,16 @@ class DashboardController extends Controller
         $currentMonth = date('m'); // Bulan sekarang
 
         // === Pemasukan dari TransaksiPenjualan ===
-        $pemasukan = TransaksiPenjualan::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total')
-            ->whereYear('created_at', $year)
+        $pemasukan = TransaksiPenjualan::selectRaw('MONTH(tanggal_pemesanan) as bulan, SUM(total_harga) as total')
+            ->whereYear('tanggal_pemesanan', $year)
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan')
             ->toArray();
 
         // === Pengeluaran dari Pembelian ===
-        $pengeluaranPembelian = Pembelian::selectRaw('MONTH(created_at) as bulan, SUM(total_harga) as total')
-            ->whereYear('created_at', $year)
+        $pengeluaranPembelian = Pembelian::selectRaw('MONTH(tanggal_pembelian) as bulan, SUM(total_harga) as total')
+            ->whereYear('tanggal_pembelian', $year)
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan')
@@ -60,13 +60,13 @@ class DashboardController extends Controller
         // === Total per Tahun & Bulan Ini ===
         $totalPemasukanTahun = array_sum($dataPemasukan);
         $totalPengeluaranTahun = array_sum($dataPengeluaran);
-        $totalPemasukanBulan = TransaksiPenjualan::whereYear('created_at', $year)
-        ->whereMonth('created_at', $currentMonth)
+        $totalPemasukanBulan = TransaksiPenjualan::whereYear('tanggal_pemesanan', $year)
+        ->whereMonth('tanggal_pemesanan', $currentMonth)
         ->sum('total_harga');
-        $pengeluaranPembelianBulanIni = Pembelian::whereYear('created_at', $year)
-        ->whereMonth('created_at', $currentMonth)
+        $pengeluaranPembelianBulanIni = Pembelian::whereYear('tanggal_pembelian', $year)
+        ->whereMonth('tanggal_pembelian', $currentMonth)
         ->sum('total_harga');
-        $pengeluaranLainnyaBulanIni = Pengeluaran::whereYear('created_at', $year)
+        $pengeluaranLainnyaBulanIni = Pengeluaran::whereYear('tanggal_pengeluaran', $year)
         ->whereMonth('tanggal_pengeluaran', $currentMonth)
         ->sum('total_pengeluaran');
 

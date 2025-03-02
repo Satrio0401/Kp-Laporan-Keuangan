@@ -105,6 +105,17 @@ class PenjualanPerBarangController extends Controller
         return redirect('/LaporanPenjualanPerBarang')->with('success', 'Data berhasil diperbarui.');
     }
 
+    public function delete($id)
+    {
+        // Cari barang berdasarkan ID
+        $barang = PenjualanPerBarang::findOrFail($id);
+
+        // Hapus barang
+        $barang->delete();
+
+        return redirect()->back()->with('success', 'Barang berhasil dihapus');
+    }
+
     public function searchOrPdf(Request $request)
     {
         $startDate = $request->input('start_date');

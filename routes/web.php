@@ -129,7 +129,7 @@ Route::post('/LaporanPenjualanPerBarang/tambahdata/insertdata',[\App\Http\Contro
 Route::get('/LaporanPenjualanPerBarang/editdata/{no_faktur}',[\App\Http\Controllers\PenjualanPerBarangController::class,'editdata']);
 Route::post('/LaporanPenjualanPerBarang/updatedata/{no_faktur}',[\App\Http\Controllers\PenjualanPerBarangController::class,'updatedata']);
 
-Route::get('/LaporanPenjualanPerBarang/delete/{no_faktur}',[\App\Http\Controllers\PenjualanPerBarangController::class,'delete']);
+Route::get('/LaporanPenjualanPerBarang/delete/{id}',[\App\Http\Controllers\PenjualanPerBarangController::class,'delete']);
 
 // Route pencarian berdasarkan tanggal
 Route::get('/LaporanPenjualanPerBarang/search', [\App\Http\Controllers\PenjualanPerBarangController::class, 'searchOrPdf'])->name('LaporanPenjualanPerBarang.search');

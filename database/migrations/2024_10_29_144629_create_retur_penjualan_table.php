@@ -18,7 +18,11 @@ class CreateReturPenjualanTable extends Migration
             $table->enum('status', ['diterima', 'pending', 'ditolak']);
             $table->timestamps();
 
-            $table->foreign('no_faktur')->references('no_faktur')->on('transaksi_penjualan');
+            // Tambahkan ON DELETE CASCADE
+            $table->foreign('no_faktur')
+                ->references('no_faktur')
+                ->on('transaksi_penjualan')
+                ->onDelete('cascade'); // Retur akan ikut terhapus saat transaksi dihapus
         });
     }
 

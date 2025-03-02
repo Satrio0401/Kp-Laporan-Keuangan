@@ -17,7 +17,11 @@ class CreatePenjualanPerBarangTable extends Migration
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();
 
-            $table->foreign('no_faktur')->references('no_faktur')->on('transaksi_penjualan');
+            // Tambahkan ON DELETE CASCADE
+            $table->foreign('no_faktur')
+                ->references('no_faktur')
+                ->on('transaksi_penjualan')
+                ->onDelete('cascade'); // Otomatis hapus barang jika transaksi dihapus
         });
     }
 

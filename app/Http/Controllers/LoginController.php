@@ -17,7 +17,7 @@ class LoginController extends Controller
     public function loginproses(Request $request)
     {
         if(Auth::attempt($request->only('name','password'))){
-            return redirect('/LaporanPembelian')->with('success','Welcome Admin');
+            return redirect('/Dashboard')->with('success','Welcome Admin');
         }
 
         return redirect('/')->with('gagal','Username atau Password Salah');
