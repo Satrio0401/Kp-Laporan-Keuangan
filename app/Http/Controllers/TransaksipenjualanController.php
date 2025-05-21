@@ -185,4 +185,20 @@ class TransaksiPenjualanController extends Controller
             return view('Laporan Transaksi Penjualan.index', compact('transaksiPenjualan', 'totalInvoice'));
         }
     }
+
+    public function generateNoFaktur(Request $request)
+{
+    $tanggal = $request->tanggal_pemesanan; // nama field dari form
+
+    $tanggalFormat = str_replace('-', '', $tanggal); // jadi format: YYYYMMDD
+
+    // Hitung jumlah faktur di tanggal tersebut
+    $count = TransaksiPenjualan::whereDate('tanggal_pemesanan', $tanggal)->count() + 1;
+
+    $noUrut = str_pad($count, 3, '0', STR_PAD_LEFT);
+    $noFaktur = 'FJ-' . $tanggalFormat . '-' . $noUrut;
+
+    return response()->json(['no_faktur' => $noFaktur]);
+}
+
 }

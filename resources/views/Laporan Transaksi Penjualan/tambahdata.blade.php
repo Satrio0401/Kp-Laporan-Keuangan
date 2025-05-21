@@ -21,7 +21,7 @@
                                             <span class="text-danger">*</span>
                                         </label>
                                         <div class="col-lg-10">
-                                            <input type="text" id="no_faktur" name="no_faktur" class="form-control" required>
+                                            <input type="text" id="no_faktur" name="no_faktur" class="form-control" reaadonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -69,6 +69,7 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function updatePrice(select) {
         const price = select.options[select.selectedIndex].getAttribute('data-price');
@@ -139,6 +140,23 @@
         });
         document.getElementById('total_harga').value = total.toFixed(2);
     }
+
+    // ✅ Tambahan untuk generate no faktur otomatis
+    $('#tanggal_pemesanan').on('change', function () {
+        var tanggal = $(this).val();
+
+        if (tanggal) {
+            $.ajax({
+                url: '/generate-no-faktur',
+                type: 'GET',
+                data: { tanggal_pemesanan: tanggal },
+                success: function (data) {
+                    $('#no_faktur').val(data.no_faktur);
+                }
+            });
+        }
+    });
 </script>
+
 
 @endsection

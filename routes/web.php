@@ -67,6 +67,7 @@ Route::get('/LaporanTransaksiPenjualan/detail/{no_faktur}', [\App\Http\Controlle
 // Route pencarian berdasarkan tanggal
 Route::get('/LaporanTransaksiPenjualan/search', [\App\Http\Controllers\TransaksipenjualanController::class, 'searchOrPdf'])->name('LaporanTransaksiPenjualan.search');
 Route::get('LaporanTransaksiPenjualan/PDF', [\App\Http\Controllers\TransaksipenjualanController::class, 'searchOrPdf'])->name('LaporanTransaksiPenjualan.cetakpdf');
+Route::get('/generate-no-faktur', [\App\Http\Controllers\TransaksiPenjualanController::class, 'generateNoFaktur']);
 
 
 

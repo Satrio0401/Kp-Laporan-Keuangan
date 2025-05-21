@@ -31,20 +31,27 @@ class TransaksiPenjualan extends Model
         return $this->hasMany(PenjualanPerBarang::class, 'no_faktur', 'no_faktur');
     }
 
-    // // Menentukan bagaimana menghasilkan no_faktur secara otomatis
-    // public static function boot()
+    // protected static function boot()
     // {
     //     parent::boot();
 
     //     static::creating(function ($transaksi) {
-    //         // Format tanggal: YYYYMMDD
-    //         $date = Carbon::now()->format('Ymd');
-            
-    //         // Menghitung jumlah transaksi dengan no_faktur yang diawali dengan INV-YYYYMMDD
-    //         $count = TransaksiPenjualan::where('no_faktur', 'like', 'INV-'.$date.'%')->count();
-            
-    //         // Menyusun no_faktur, dimulai dari INV-YYYYMMDD-001
-    //         $transaksi->no_faktur = 'INV-'.$date.'-'.str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+    //         // Pastikan tanggal_pemesanan sudah diisi
+    //         if (!empty($transaksi->tanggal_pemesanan)) {
+    //             // Format tanggal: YYYYMMDD (misal 20250521)
+    //             $date = Carbon::parse($transaksi->tanggal_pemesanan)->format('Ymd');
+
+    //             // Prefix faktur
+    //             $prefix = 'FAK-' . $date;
+
+    //             // Hitung jumlah faktur yang sudah dibuat di tanggal itu
+    //             $count = self::whereDate('tanggal_pemesanan', $transaksi->tanggal_pemesanan)
+    //                 ->where('no_faktur', 'like', $prefix . '%')
+    //                 ->count();
+
+    //             // Buat no_faktur, contoh: FAK-20250521-001
+    //             $transaksi->no_faktur = $prefix . '-' . str_pad($count + 1, 3, '0', STR_PAD_LEFT);
+    //         }
     //     });
     // }
 }
